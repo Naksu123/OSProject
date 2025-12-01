@@ -1,12 +1,13 @@
 const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#14b8a6'];
 
-// FIXED: Simple toggle using class 'open' matches CSS
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('open');
 }
 
 function showScheduler(type) {
+    localStorage.setItem('currentScheduler', type);
+
     document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
     });
@@ -14,11 +15,18 @@ function showScheduler(type) {
         item.classList.remove('active');
     });
     
-    document.getElementById(`${type}-section`).classList.add('active');
-    event.target.classList.add('active');
+    const section = document.getElementById(`${type}-section`);
+    if (section) {
+        section.classList.add('active');
+    }
     
-    // NEW: Clear other algorithms when switching
-    // This effectively resets the "previous" algorithm you opened
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        if(item.getAttribute('onclick').includes(type)) {
+            item.classList.add('active');
+        }
+    });
+    
     const algorithms = ['fcfs', 'srtf', 'rr'];
     algorithms.forEach(algo => {
         if (algo !== type) {
@@ -26,13 +34,19 @@ function showScheduler(type) {
         }
     });
     
-    // Auto-close menu on mobile
     if (window.innerWidth < 768) {
-        document.querySelector('.sidebar').classList.remove('open');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) sidebar.classList.remove('open');
+    }
+
+    const container = document.getElementById(`${type}-process-inputs`);
+    if (container && container.innerHTML.trim() === '') {
+        if (type === 'fcfs') generateFCFSInputs();
+        else if (type === 'srtf') generateSRTFInputs();
+        else if (type === 'rr') generateRRInputs();
     }
 }
 
-// Randomize Values
 function randomizeValues(type) {
     const num = parseInt(document.getElementById(`${type}-num-processes`).value);
     
@@ -51,7 +65,6 @@ function generateFCFSInputs() {
     const num = parseInt(document.getElementById('fcfs-num-processes').value);
     const container = document.getElementById('fcfs-process-inputs');
     
-    // Remove grid class so button doesn't stretch
     container.classList.remove('cards-grid');
     
     let html = '<button class="btn-random" onclick="randomizeValues(\'fcfs\')">🎲 Randomize Data</button>';
@@ -359,4 +372,11 @@ function clearResults(type) {
     document.getElementById(`${type}-process-inputs`).innerHTML = '';
 }
 
-generateFCFSInputs();
+document.addEventListener('DOMContentLoaded', () => {
+    const savedScheduler = localStorage.getItem('currentScheduler');
+    if (savedScheduler) {
+        showScheduler(savedScheduler);
+    } else {
+        showScheduler('fcfs');
+    }
+});
