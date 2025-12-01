@@ -485,6 +485,20 @@ button {
 }
 
 /* Mobile Sidebar Logic */
+/* Transform Hamburger into X when sidebar is open */
+.sidebar.open .hamburger span:nth-child(1) {
+    top: 9px;
+    transform: rotate(45deg);
+}
+
+.sidebar.open .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.sidebar.open .hamburger span:nth-child(3) {
+    top: 9px;
+    transform: rotate(-45deg);
+}
 @media (max-width: 768px) {
     .glass-container { flex-direction: column; }
     
@@ -497,9 +511,6 @@ button {
         height: 100%;
         box-shadow: 10px 0 20px rgba(0,0,0,0.1);
         z-index: 9999;
-        /* UPDATED: More transparent background */
-        background: rgba(255, 255, 255, 0.3); 
-        backdrop-filter: blur(15px);
     }
     
     .sidebar.open {
