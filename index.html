@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Scheduling Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="glass-container">
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="hamburger" onclick="toggleSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h2 id="scheduler-title">Schedulers</h2>
+            </div>
+            
+            <div class="menu-items" id="menu-list">
+                <div class="menu-item active" onclick="showScheduler('fcfs')">
+                    FCFS Algorithm
+                </div>
+                <div class="menu-item" onclick="showScheduler('srtf')">
+                    SRTF Algorithm
+                </div>
+                <div class="menu-item" onclick="showScheduler('rr')">
+                    Round Robin
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="mobile-header">
+                <div class="hamburger-mobile" onclick="toggleSidebar()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h3 style="margin-left: 15px; font-weight: 600; color: #6366f1;">Menu</h3>
+            </div>
+
+            <div class="project-header">
+                <h1>Operation System Project<br><span>T-B-D Talanquines Ballaran Dela Cruz</span></h1>
+            </div>
+
+            <div class="content-section active" id="fcfs-section">
+                <div class="section-header">
+                    <h2>First Come First Serve (FCFS)</h2>
+                    <p class="subtitle">Non-preemptive scheduling algorithm</p>
+                </div>
+                
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <label>Number of Processes</label>
+                        <input type="number" id="fcfs-num-processes" value="4" min="1" max="10">
+                    </div>
+                    <button class="btn-primary" onclick="generateFCFSInputs()">Generate Inputs</button>
+                </div>
+                
+                <div id="fcfs-process-inputs" class="cards-grid"></div>
+                
+                <div class="action-buttons">
+                    <button class="btn-calculate" onclick="calculateFCFS()">Calculate Schedule</button>
+                    <button class="btn-clear" onclick="clearResults('fcfs')">Reset</button>
+                </div>
+                
+                <div id="fcfs-results" class="results-container"></div>
+            </div>
+
+            <div class="content-section" id="srtf-section">
+                <div class="section-header">
+                    <h2>Shortest Remaining Time First (SRTF)</h2>
+                    <p class="subtitle">Preemptive scheduling based on Burst Time</p>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <label>Number of Processes</label>
+                        <input type="number" id="srtf-num-processes" value="4" min="1" max="10">
+                    </div>
+                    <button class="btn-primary" onclick="generateSRTFInputs()">Generate Inputs</button>
+                </div>
+
+                <div id="srtf-process-inputs" class="cards-grid"></div>
+
+                <div class="action-buttons">
+                    <button class="btn-calculate" onclick="calculateSRTF()">Calculate Schedule</button>
+                    <button class="btn-clear" onclick="clearResults('srtf')">Reset</button>
+                </div>
+
+                <div id="srtf-results" class="results-container"></div>
+            </div>
+
+            <div class="content-section" id="rr-section">
+                <div class="section-header">
+                    <h2>Round Robin (RR)</h2>
+                    <p class="subtitle">Preemptive scheduling with Time Quantum</p>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <label>Number of Processes</label>
+                        <input type="number" id="rr-num-processes" value="4" min="1" max="10">
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Time Quantum</label>
+                        <input type="number" id="rr-quantum" value="2" min="1">
+                    </div>
+                    <button class="btn-primary" onclick="generateRRInputs()">Generate Inputs</button>
+                </div>
+
+                <div id="rr-process-inputs" class="cards-grid"></div>
+
+                <div class="action-buttons">
+                    <button class="btn-calculate" onclick="calculateRR()">Calculate Schedule</button>
+                    <button class="btn-clear" onclick="clearResults('rr')">Reset</button>
+                </div>
+
+                <div id="rr-results" class="results-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
