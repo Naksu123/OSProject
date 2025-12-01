@@ -51,12 +51,12 @@ function randomizeValues(type) {
     const num = parseInt(document.getElementById(`${type}-num-processes`).value);
     
     for (let i = 0; i < num; i++) {
-        document.getElementById(`${type}-at-${i}`).value = Math.floor(Math.random() * 11);
-        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 9) + 2;
+        document.getElementById(`${type}-at-${i}`).value = Math.floor(Math.random() * 20);
+        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 18) + 2;
         
         const prInput = document.getElementById(`${type}-pr-${i}`);
         if (prInput) {
-            prInput.value = Math.floor(Math.random() * 5) + 1;
+            prInput.value = Math.floor(Math.random() * 7) + 1;
         }
     }
 }
@@ -80,7 +80,7 @@ function generateFCFSInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="fcfs-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
+                    <input type="number" id="fcfs-bt-${i}" value="${Math.floor(Math.random() * 10) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -134,7 +134,7 @@ function generateRRInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
+                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 12) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -380,3 +380,4 @@ document.addEventListener('DOMContentLoaded', () => {
         showScheduler('fcfs');
     }
 });
+
