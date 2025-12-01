@@ -1,5 +1,6 @@
 const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#14b8a6'];
 
+// FIXED: Simple toggle using class 'open' matches CSS
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('open');
@@ -16,21 +17,32 @@ function showScheduler(type) {
     document.getElementById(`${type}-section`).classList.add('active');
     event.target.classList.add('active');
     
+    // NEW: Clear other algorithms when switching
+    // This effectively resets the "previous" algorithm you opened
+    const algorithms = ['fcfs', 'srtf', 'rr'];
+    algorithms.forEach(algo => {
+        if (algo !== type) {
+            clearResults(algo);
+        }
+    });
+    
+    // Auto-close menu on mobile
     if (window.innerWidth < 768) {
         document.querySelector('.sidebar').classList.remove('open');
     }
 }
 
+// Randomize Values
 function randomizeValues(type) {
     const num = parseInt(document.getElementById(`${type}-num-processes`).value);
     
     for (let i = 0; i < num; i++) {
-        document.getElementById(`${type}-at-${i}`).value = Math.floor(Math.random() * 20);
-        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 10) + 2;
-
+        document.getElementById(`${type}-at-${i}`).value = Math.floor(Math.random() * 11);
+        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 9) + 2;
+        
         const prInput = document.getElementById(`${type}-pr-${i}`);
         if (prInput) {
-            prInput.value = Math.floor(Math.random() * 10) + 2;
+            prInput.value = Math.floor(Math.random() * 5) + 1;
         }
     }
 }
@@ -38,6 +50,8 @@ function randomizeValues(type) {
 function generateFCFSInputs() {
     const num = parseInt(document.getElementById('fcfs-num-processes').value);
     const container = document.getElementById('fcfs-process-inputs');
+    
+    // Remove grid class so button doesn't stretch
     container.classList.remove('cards-grid');
     
     let html = '<button class="btn-random" onclick="randomizeValues(\'fcfs\')">🎲 Randomize Data</button>';
@@ -53,7 +67,7 @@ function generateFCFSInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="fcfs-bt-${i}" value="${Math.floor(Math.random() * 10) + 2}" min="1">
+                    <input type="number" id="fcfs-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -61,6 +75,7 @@ function generateFCFSInputs() {
     html += '</div>';
     container.innerHTML = html;
 }
+
 function generateSRTFInputs() {
     const num = parseInt(document.getElementById('srtf-num-processes').value);
     const container = document.getElementById('srtf-process-inputs');
@@ -79,7 +94,7 @@ function generateSRTFInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="srtf-bt-${i}" value="${Math.floor(Math.random() * 10) + 2}" min="1">
+                    <input type="number" id="srtf-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -106,7 +121,7 @@ function generateRRInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 10) + 2}" min="1">
+                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -146,6 +161,7 @@ function calculateFCFS() {
     
     displayResults('fcfs', processes, gantt);
 }
+
 function calculateSRTF() {
     const num = parseInt(document.getElementById('srtf-num-processes').value);
     const processes = [];
@@ -176,7 +192,7 @@ function calculateSRTF() {
             currentTime++;
             continue;
         }
-
+        
         available.sort((a, b) => {
             if (a.remaining !== b.remaining) return a.remaining - b.remaining;
             return a.at - b.at;
@@ -306,14 +322,14 @@ function displayResults(type, processes, gantt) {
     html += '</div></div>';
     
     html += '<h3>Detailed Metrics</h3><table class="results-table"><tr><th>Process</th><th>Arrival Time</th><th>Burst Time</th>';
-
+    if (type === 'srtf') html += '<th>Priority</th>';
     html += '<th>Completion Time</th><th>Turnaround</th><th>Waiting</th></tr>';
     
     let totalTAT = 0, totalWT = 0;
     
     processes.forEach(p => {
         html += `<tr><td>P${p.id}</td><td>${p.at}</td><td>${p.bt}</td>`;
-
+        if (type === 'srtf') html += `<td>${p.pr}</td>`;
         html += `<td>${p.ct}</td><td>${p.tat}</td><td>${p.wt}</td></tr>`;
         totalTAT += p.tat;
         totalWT += p.wt;
