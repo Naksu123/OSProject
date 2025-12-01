@@ -497,6 +497,9 @@ button {
         height: 100%;
         box-shadow: 10px 0 20px rgba(0,0,0,0.1);
         z-index: 9999;
+        /* Updated background for transparency on mobile */
+        background: rgba(255, 255, 255, 0.7); 
+        backdrop-filter: blur(15px); /* Ensure readability */
     }
     
     .sidebar.open {
