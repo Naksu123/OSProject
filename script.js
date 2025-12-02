@@ -52,11 +52,11 @@ function randomizeValues(type) {
     
     for (let i = 0; i < num; i++) {
         document.getElementById(`${type}-at-${i}`).value = Math.floor(Math.random() * 20);
-        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 18) + 2;
-        
+        document.getElementById(`${type}-bt-${i}`).value = Math.floor(Math.random() * 12) + 2;
+
         const prInput = document.getElementById(`${type}-pr-${i}`);
         if (prInput) {
-            prInput.value = Math.floor(Math.random() * 7) + 1;
+            prInput.value = Math.floor(Math.random() * 10) + 2;
         }
     }
 }
@@ -107,7 +107,7 @@ function generateSRTFInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="srtf-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
+                    <input type="number" id="srtf-bt-${i}" value="${Math.floor(Math.random() * 14) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -134,7 +134,7 @@ function generateRRInputs() {
                 </div>
                 <div class="input-group" style="margin-top:10px;">
                     <label>Burst Time</label>
-                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 12) + 2}" min="1">
+                    <input type="number" id="rr-bt-${i}" value="${Math.floor(Math.random() * 8) + 2}" min="1">
                 </div>
             </div>
         `;
@@ -335,14 +335,12 @@ function displayResults(type, processes, gantt) {
     html += '</div></div>';
     
     html += '<h3>Detailed Metrics</h3><table class="results-table"><tr><th>Process</th><th>Arrival Time</th><th>Burst Time</th>';
-    if (type === 'srtf') html += '<th>Priority</th>';
     html += '<th>Completion Time</th><th>Turnaround</th><th>Waiting</th></tr>';
     
     let totalTAT = 0, totalWT = 0;
     
     processes.forEach(p => {
         html += `<tr><td>P${p.id}</td><td>${p.at}</td><td>${p.bt}</td>`;
-        if (type === 'srtf') html += `<td>${p.pr}</td>`;
         html += `<td>${p.ct}</td><td>${p.tat}</td><td>${p.wt}</td></tr>`;
         totalTAT += p.tat;
         totalWT += p.wt;
@@ -380,4 +378,3 @@ document.addEventListener('DOMContentLoaded', () => {
         showScheduler('fcfs');
     }
 });
-
